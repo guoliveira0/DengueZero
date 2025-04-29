@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Adicione outras rotas aqui
+    path('reports/', include('reports.urls')),
 ]
 
 if settings.DEBUG:
