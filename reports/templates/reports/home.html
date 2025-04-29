@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dengue Zero - Página Principal</title>
+</head>
+<body>
+    <h1>Bem-vindo ao Dengue Zero</h1>
+
+    <!-- Campo de Pesquisa -->
+    <form method="get" action="">
+        <input type="text" name="q" placeholder="Pesquisar por título ou localização" value="{{ query }}">
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    <!-- Feed de Denúncias -->
+    <h2>Focos de Dengue</h2>
+    <ul>
+        {% for report in focus_reports %}
+            <li>
+                <strong>{{ report.title }}</strong> - {{ report.location }} <br>
+                {{ report.description }}
+            </li>
+        {% empty %}
+            <p>Nenhuma denúncia de foco de dengue encontrada.</p>
+        {% endfor %}
+    </ul>
+
+    <h2>Casos de Dengue em Casa</h2>
+    <ul>
+        {% for report in case_reports %}
+            <li>
+                <strong>{{ report.title }}</strong> - {{ report.location }} <br>
+                {{ report.description }}
+            </li>
+        {% empty %}
+            <p>Nenhuma denúncia de caso de dengue encontrada.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>

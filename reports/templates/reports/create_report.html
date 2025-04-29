@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar Denúncia</title>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('id_latitude').value = position.coords.latitude;
+                    document.getElementById('id_longitude').value = position.coords.longitude;
+                }, function(error) {
+                    alert("Não foi possível obter sua localização.");
+                });
+            } else {
+                alert("Geolocalização não é suportada pelo seu navegador.");
+            }
+        }
+    </script>
+</head>
+<body onload="getLocation()">
+    <h1>Criar Denúncia</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" id="id_latitude" name="latitude">
+        <input type="hidden" id="id_longitude" name="longitude">
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
