@@ -6,9 +6,16 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
     <header class="bg-green-600 text-white py-4">
-        <div class="container mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl font-bold">Dengue Zero</h1> <!-- Aumenta o texto em telas menores -->
-            <p class="text-lg md:text-xl">Plataforma de combate à dengue</p>
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold">Dengue Zero</h1>
+                <p class="text-lg md:text-xl">Plataforma de combate à dengue</p>
+            </div>
+            <div>
+                <a href="{% url 'create_report' %}" class="px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-200 transition">
+                    Reportar Caso
+                </a>
+            </div>
         </div>
     </header>
 
@@ -37,6 +44,9 @@
                     <strong class="text-lg md:text-xl">{{ report.title }}</strong> - 
                     <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
                     <p class="text-base md:text-lg">{{ report.description }}</p>
+                    {% if report.image %}
+                        <img src="{{ report.image.url }}" alt="Imagem do foco de dengue" class="mt-4 rounded-lg w-full max-h-64 object-cover">
+                    {% endif %}
                 </li>
             {% empty %}
                 <p class="text-base md:text-lg text-gray-600">Nenhuma denúncia de foco de dengue encontrada.</p>
@@ -50,6 +60,9 @@
                     <strong class="text-lg md:text-xl">{{ report.title }}</strong> - 
                     <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
                     <p class="text-base md:text-lg">{{ report.description }}</p>
+                    {% if report.image %}
+                        <img src="{{ report.image.url }}" alt="Imagem do caso de dengue" class="mt-4 rounded-lg w-full max-h-64 object-cover">
+                    {% endif %}
                 </li>
             {% empty %}
                 <p class="text-base md:text-lg text-gray-600">Nenhuma denúncia de caso de dengue encontrada.</p>
