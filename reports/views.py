@@ -6,32 +6,41 @@ from django.db.models import Q
 
 def create_report(request):
     if request.method == 'POST':
-        form = ReportForm(request.POST)
+        form = ReportForm(request.POST, request.FILES)
         if form.is_valid():
             report = form.save(commit=False)
-            # Capturar latitude e longitude do POST
             latitude = request.POST.get('latitude')
             longitude = request.POST.get('longitude')
             if latitude and longitude:
-                report.latitude = latitude
-                report.longitude = longitude
-                # Usar geopy para converter coordenadas em endereço
                 geolocator = Nominatim(user_agent="denguezero")
                 location = geolocator.reverse(f"{latitude}, {longitude}")
                 report.location = location.address if location else "Localização desconhecida"
             report.save()
-            return redirect('report_success')
+            return render(request, 'reports/report_success.html')
     else:
         form = ReportForm()
     return render(request, 'reports/create_report.html', {'form': form})
 
+
 def report_success(request):
     return render(request, 'reports/report_success.html')
-  
-  
+
+
 def home(request):
     query = request.GET.get('q', '')  # Captura o termo de busca
     reports = Report.objects.all()
+
+    # Obter a localização do usuário usando a API
+    user_latitude = request.GET.get('latitude')
+    user_longitude = request.GET.get('longitude')
+
+    if user_latitude and user_longitude:
+        geolocator = Nominatim(user_agent="denguezero")
+        location = geolocator.reverse(f"{user_latitude}, {user_longitude}")
+        if location:
+            user_location = location.address
+            # Filtrar relatórios com base na localização
+            reports = reports.filter(location__icontains=user_location)
 
     if query:
         reports = reports.filter(

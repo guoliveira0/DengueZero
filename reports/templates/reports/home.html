@@ -3,6 +3,28 @@
 <head>
     <title>Dengue Zero - Página Principal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function getLocationAndRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (!urlParams.has('latitude') || !urlParams.has('longitude')) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const currentUrl = window.location.href.split('?')[0];
+                        window.location.href = `${currentUrl}?latitude=${latitude}&longitude=${longitude}`;
+                    }, function(error) {
+                        alert("Não foi possível obter sua localização.");
+                    });
+                } else {
+                    alert("Geolocalização não é suportada pelo seu navegador.");
+                }
+            }
+        }
+
+        // Chamar a função ao carregar a página
+        window.onload = getLocationAndRedirect;
+    </script>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <header class="bg-green-600 text-white py-4">

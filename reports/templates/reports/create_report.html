@@ -15,9 +15,10 @@
                 alert("Geolocalização não é suportada pelo seu navegador.");
             }
         }
+        window.onload = getLocation;
     </script>
 </head>
-<body onload="getLocation()" class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 text-gray-800">
     <h1 class="text-3xl font-bold text-center mt-4">Criar Denúncia</h1>
     <form method="post" enctype="multipart/form-data" class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
         {% csrf_token %}
