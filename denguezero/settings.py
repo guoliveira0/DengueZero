@@ -128,4 +128,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-GOOGLE_MAPS_API_KEY = 'AIzaSyBDxf0pReQzQj64eoLrsVWzWJhx3rvnFzo'
+

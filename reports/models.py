@@ -6,6 +6,11 @@ class Report(models.Model):
         ('case', 'Caso de Dengue em Casa'),
     ]
 
+    STATUS_CHOICES = [
+        ('open', 'Aberto'),
+        ('resolved', 'Resolvido'),
+    ]
+
     report_type = models.CharField(
         max_length=10,
         choices=REPORT_TYPE_CHOICES,
@@ -17,7 +22,13 @@ class Report(models.Model):
     location = models.CharField(max_length=255, verbose_name="Localização", blank=True, null=True)
     latitude = models.FloatField(verbose_name="Latitude", blank=True, null=True)
     longitude = models.FloatField(verbose_name="Longitude", blank=True, null=True)
-    image = models.ImageField(upload_to='reports/', blank=True, null=True, verbose_name="Imagem")  # Campo de imagem
+    image = models.ImageField(upload_to='reports/', blank=True, null=True, verbose_name="Imagem")
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='open',
+        verbose_name="Status"
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Data de Criação")
 
     def __str__(self):
