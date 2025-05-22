@@ -33,10 +33,25 @@
                 <h1 class="text-4xl md:text-5xl font-bold">Dengue Zero</h1>
                 <p class="text-lg md:text-xl">Plataforma de combate à dengue</p>
             </div>
-            <div>
+            <div class="flex gap-2 items-center">
                 <a href="{% url 'create_report' %}" class="px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-200 transition">
                     Reportar Caso
                 </a>
+                {% if user.is_authenticated %}
+                    <span class="px-3 py-2 bg-green-700 rounded text-white font-semibold">
+                        {{ user.username }}
+                    </span>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-700 transition">
+                            Sair
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-700 transition">
+                        Login
+                    </a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -70,7 +85,7 @@
                         <img src="{{ report.image.url }}" alt="Imagem do foco de dengue" class="mt-4 rounded-lg w-full max-h-64 object-cover">
                     {% endif %}
                     <p class="text-sm text-gray-500 mt-2">Status: {{ report.get_status_display }}</p>
-                    {% if user.is_authenticated and user.is_staff %}
+                    {% if user.is_authenticated and user.username|lower|slice:"-22:" == "@centrozoonoses.com.br" %}
                         <form method="post" action="{% url 'change_status' report.id %}">
                             {% csrf_token %}
                             <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
