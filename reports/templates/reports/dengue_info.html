@@ -1,0 +1,588 @@
+{% extends 'reports/base.html' %}
+{% load static %}
+
+{% block title %}Informações sobre Dengue{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+    <header class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-8 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">Tudo Sobre a Dengue</h1>
+                    <p class="text-lg opacity-90">Informações essenciais para prevenção e combate</p>
+                </div>
+                <a href="{% url 'home' %}" class="mt-4 md:mt-0 bg-white text-orange-600 hover:bg-orange-100 px-4 py-2 rounded-lg font-bold shadow-md transition-all hover:shadow-lg">
+                    Voltar à Página Principal
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-8 px-4">
+        <!-- Navegação em tabs -->
+        <div class="mb-8 bg-white rounded-xl shadow-md p-2 flex flex-wrap">
+            <button class="tab-btn active-tab flex-grow p-3 rounded-lg font-bold" data-target="symptoms">
+                <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+                </svg>
+                Sintomas
+            </button>
+            <button class="tab-btn flex-grow p-3 rounded-lg font-bold" data-target="prevention">
+                <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"></path>
+                </svg>
+                Prevenção
+            </button>
+            <button class="tab-btn flex-grow p-3 rounded-lg font-bold" data-target="breeding">
+                <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                </svg>
+                Identificação de Focos
+            </button>
+            <button class="tab-btn flex-grow p-3 rounded-lg font-bold" data-target="quiz">
+                <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                </svg>
+                Quiz
+            </button>
+        </div>
+
+        <!-- Conteúdo das tabs -->
+        <div class="tab-content active" id="symptoms">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-orange-600 mb-4">Sintomas da Dengue</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-orange-50 rounded-lg p-4 shadow-md hover:shadow-lg transition-all symptom-card">
+                        <h3 class="text-xl font-bold text-orange-700 mb-2">Sintomas Comuns</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Febre alta (39°C a 40°C)</li>
+                            <li>Dores musculares intensas</li>
+                            <li>Dor ao movimentar os olhos</li>
+                            <li>Mal-estar</li>
+                            <li>Falta de apetite</li>
+                            <li>Dor de cabeça</li>
+                            <li>Manchas vermelhas no corpo</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-red-50 rounded-lg p-4 shadow-md hover:shadow-lg transition-all symptom-card">
+                        <h3 class="text-xl font-bold text-red-700 mb-2">Sinais de Alerta (Procure ajuda médica)</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Dores abdominais intensas e contínuas</li>
+                            <li>Vômitos persistentes</li>
+                            <li>Sangramento de mucosas (gengivas, nariz)</li>
+                            <li>Letargia ou irritabilidade</li>
+                            <li>Diminuição da urina</li>
+                            <li>Queda abrupta das plaquetas</li>
+                            <li>Aumento repentino do hematócrito</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-blue-800"><strong>Importante:</strong> Os sintomas costumam durar de 2 a 7 dias. Se você suspeita de dengue, procure atendimento médico!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content hidden" id="prevention">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-green-600 mb-4">Como Prevenir a Dengue</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="prevention-card">
+                        <div class="bg-green-600 text-white p-4 rounded-t-lg">
+                            <h3 class="text-xl font-bold">Elimine água parada</h3>
+                        </div>
+                        <div class="border border-green-200 p-4 rounded-b-lg">
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Tampe caixas d'água</li>
+                                <li>Guarde pneus em locais cobertos</li>
+                                <li>Vire garrafas com a boca para baixo</li>
+                                <li>Limpe calhas regularmente</li>
+                                <li>Mantenha piscinas tratadas</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="prevention-card">
+                        <div class="bg-blue-600 text-white p-4 rounded-t-lg">
+                            <h3 class="text-xl font-bold">Proteção Pessoal</h3>
+                        </div>
+                        <div class="border border-blue-200 p-4 rounded-b-lg">
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Use repelentes</li>
+                                <li>Instale telas em janelas</li>
+                                <li>Use roupas compridas</li>
+                                <li>Utilize mosquiteiros</li>
+                                <li>Evite horários de maior atividade dos mosquitos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="prevention-card">
+                        <div class="bg-purple-600 text-white p-4 rounded-t-lg">
+                            <h3 class="text-xl font-bold">Ações Comunitárias</h3>
+                        </div>
+                        <div class="border border-purple-200 p-4 rounded-b-lg">
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Denuncie focos de dengue</li>
+                                <li>Participe de campanhas de limpeza</li>
+                                <li>Informe vizinhos sobre prevenção</li>
+                                <li>Reporte terrenos abandonados</li>
+                                <li>Ajude idosos a eliminar focos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <button id="prevention-tips-btn" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors">
+                        Ver mais dicas de prevenção
+                    </button>
+                    
+                    <div id="prevention-tips" class="hidden mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <h4 class="font-bold text-green-800 mb-2">Dicas Extras:</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Faça inspeções semanais em sua casa</li>
+                            <li>Coloque areia nos pratos de plantas</li>
+                            <li>Mantenha ralos limpos e use telas</li>
+                            <li>Lave bebedouros de animais com frequência</li>
+                            <li>Descarte lixo corretamente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content hidden" id="breeding">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-yellow-600 mb-4">Como Identificar Focos do Mosquito</h2>
+                
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/2">
+                        <h3 class="text-xl font-bold text-yellow-700 mb-3">Locais favoráveis para criadouros:</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="breeding-place" data-info="Garrafas sem tampa, viradas com a boca para cima, acumulam água da chuva e são criadouros perfeitos.">
+                                <div class="flex items-center bg-yellow-50 p-3 rounded-lg hover:bg-yellow-100 cursor-pointer">
+                                    <span class="text-yellow-800 font-medium flex-grow">Garrafas e recipientes descartáveis</span>
+                                    <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div class="breeding-info hidden mt-2 p-3 bg-yellow-50 rounded-lg text-sm"></div>
+                            </div>
+                            
+                            <div class="breeding-place" data-info="As calhas entupidas com folhas formam pequenas poças onde o mosquito pode depositar seus ovos.">
+                                <div class="flex items-center bg-yellow-50 p-3 rounded-lg hover:bg-yellow-100 cursor-pointer">
+                                    <span class="text-yellow-800 font-medium flex-grow">Calhas e canaletas</span>
+                                    <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div class="breeding-info hidden mt-2 p-3 bg-yellow-50 rounded-lg text-sm"></div>
+                            </div>
+                            
+                            <div class="breeding-place" data-info="A água acumulada nos pratinhos forma um ambiente propício para o desenvolvimento das larvas.">
+                                <div class="flex items-center bg-yellow-50 p-3 rounded-lg hover:bg-yellow-100 cursor-pointer">
+                                    <span class="text-yellow-800 font-medium flex-grow">Pratinhos de plantas</span>
+                                    <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div class="breeding-info hidden mt-2 p-3 bg-yellow-50 rounded-lg text-sm"></div>
+                            </div>
+                            
+                            <div class="breeding-place" data-info="Pneus acumulam e mantêm água por muito tempo, sendo ideais para a reprodução do mosquito.">
+                                <div class="flex items-center bg-yellow-50 p-3 rounded-lg hover:bg-yellow-100 cursor-pointer">
+                                    <span class="text-yellow-800 font-medium flex-grow">Pneus velhos</span>
+                                    <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div class="breeding-info hidden mt-2 p-3 bg-yellow-50 rounded-lg text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 mt-6 md:mt-0">
+                        <h3 class="text-xl font-bold text-yellow-700 mb-3">Como identificar larvas:</h3>
+                        
+                        <div class="bg-yellow-50 p-4 rounded-lg mb-4">
+                            <p class="mb-3">As larvas do mosquito da dengue são pequenas e se movimentam em formato de "S" na água. Veja o que procurar:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Pequenos "bichinhos" nadando na água</li>
+                                <li>Movimentação rápida quando a água é perturbada</li>
+                                <li>Tamanho aproximado de 1mm a 7mm</li>
+                                <li>Ficam na superfície da água para respirar</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-orange-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-orange-800 mb-2">Como agir ao encontrar focos:</h4>
+                            <ol class="list-decimal pl-5 space-y-2">
+                                <li>Elimine a água parada do recipiente</li>
+                                <li>Limpe bem as paredes do recipiente (os ovos podem resistir meses)</li>
+                                <li>Descarte adequadamente itens que não utiliza mais</li>
+                                <li>Denuncie focos em locais públicos ou terrenos abandonados</li>
+                                <li>Avise seus vizinhos sobre os focos encontrados</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <img id="larvaeImage" src="https://www.prefeitura.sp.gov.br/cidade/secretarias/upload/saude/larvas_mosquito1.jpg" alt="Larvas do mosquito da dengue" class="hidden rounded-lg shadow-lg mx-auto max-h-80">
+                    
+                    <div class="flex justify-center mt-4">
+                        <button id="show-larvae" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors">
+                            Mostrar imagem de larvas
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content hidden" id="quiz">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-purple-600 mb-4">Teste seus conhecimentos sobre a Dengue</h2>
+                
+                <div id="quiz-container">
+                    <div id="question-container" class="bg-purple-50 p-6 rounded-lg mb-4">
+                        <h3 id="question-text" class="text-xl font-bold text-purple-800 mb-4">Carregando pergunta...</h3>
+                        <div id="answer-buttons" class="grid grid-cols-1 gap-3">
+                            <!-- As opções serão inseridas via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div id="feedback-container" class="hidden bg-gray-50 p-4 rounded-lg mb-4">
+                        <p id="feedback-text" class="text-lg"></p>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span id="progress-text" class="text-gray-600">Pergunta 1 de 5</span>
+                        <button id="next-button" class="bg-purple-500 text-white py-2 px-6 rounded hover:bg-purple-600 transition-colors">
+                            Próxima
+                        </button>
+                    </div>
+                    
+                    <div id="results-container" class="hidden mt-4 bg-purple-100 p-6 rounded-lg text-center">
+                        <h3 class="text-xl font-bold text-purple-800 mb-3">Resultado Final</h3>
+                        <p id="score-text" class="text-2xl font-bold mb-4">Você acertou X de 5 questões!</p>
+                        <button id="restart-button" class="bg-purple-600 text-white py-2 px-6 rounded hover:bg-purple-700 transition-colors">
+                            Reiniciar Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-orange-700 text-white py-4 text-center">
+        <p>© {% now "Y" %} Dengue Zero - Todas as informações são baseadas em diretrizes oficiais de saúde</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controle das tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.dataset.target;
+                    
+                    // Atualizar botões
+                    tabBtns.forEach(b => b.classList.remove('active-tab'));
+                    btn.classList.add('active-tab');
+                    
+                    // Atualizar conteúdo
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(target).classList.remove('hidden');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+            
+            // Efeito nos cards de sintomas
+            const symptomCards = document.querySelectorAll('.symptom-card');
+            symptomCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Botão de dicas de prevenção
+            const preventionTipsBtn = document.getElementById('prevention-tips-btn');
+            const preventionTips = document.getElementById('prevention-tips');
+            
+            preventionTipsBtn.addEventListener('click', () => {
+                preventionTips.classList.toggle('hidden');
+                preventionTipsBtn.textContent = preventionTips.classList.contains('hidden') 
+                    ? 'Ver mais dicas de prevenção' 
+                    : 'Ocultar dicas extras';
+            });
+            
+            // Exibir informações sobre criadouros
+            const breedingPlaces = document.querySelectorAll('.breeding-place');
+            breedingPlaces.forEach(place => {
+                const infoDiv = place.querySelector('.breeding-info');
+                infoDiv.textContent = place.dataset.info;
+                
+                place.querySelector('div:first-child').addEventListener('click', () => {
+                    infoDiv.classList.toggle('hidden');
+                });
+            });
+            
+            // Mostrar/esconder imagem de larvas
+            const showLarvaeBtn = document.getElementById('show-larvae');
+            const larvaeImage = document.getElementById('larvaeImage');
+            
+            showLarvaeBtn.addEventListener('click', () => {
+                larvaeImage.classList.toggle('hidden');
+                showLarvaeBtn.textContent = larvaeImage.classList.contains('hidden')
+                    ? 'Mostrar imagem de larvas'
+                    : 'Esconder imagem';
+            });
+            
+            // Quiz sobre dengue
+            const questions = [
+                {
+                    question: 'Qual é o principal transmissor da dengue?',
+                    answers: [
+                        { text: 'Aedes aegypti', correct: true },
+                        { text: 'Anopheles', correct: false },
+                        { text: 'Culex', correct: false },
+                        { text: 'Aedes albopictus', correct: false }
+                    ]
+                },
+                {
+                    question: 'Qual não é um sintoma comum da dengue?',
+                    answers: [
+                        { text: 'Febre alta', correct: false },
+                        { text: 'Dor nos olhos', correct: false },
+                        { text: 'Urticária (coceira)', correct: false },
+                        { text: 'Tosse seca persistente', correct: true }
+                    ]
+                },
+                {
+                    question: 'Como prevenir a proliferação do mosquito da dengue?',
+                    answers: [
+                        { text: 'Manter água parada em recipientes abertos', correct: false },
+                        { text: 'Eliminar possíveis criadouros', correct: true },
+                        { text: 'Deixar pneus velhos no quintal', correct: false },
+                        { text: 'Manter a caixa d\'água destampada', correct: false }
+                    ]
+                },
+                {
+                    question: 'Qual é o período de incubação da dengue após a picada?',
+                    answers: [
+                        { text: '1 a 2 dias', correct: false },
+                        { text: '4 a 10 dias', correct: true },
+                        { text: '2 a 3 semanas', correct: false },
+                        { text: '1 mês', correct: false }
+                    ]
+                },
+                {
+                    question: 'Qual sinal é considerado de alerta e exige atendimento médico imediato?',
+                    answers: [
+                        { text: 'Febre baixa', correct: false },
+                        { text: 'Dor de cabeça leve', correct: false },
+                        { text: 'Sangramento nas gengivas', correct: true },
+                        { text: 'Manchas na pele que somem em poucas horas', correct: false }
+                    ]
+                }
+            ];
+            
+            let currentQuestionIndex = 0;
+            let score = 0;
+            
+            const questionContainer = document.getElementById('question-container');
+            const questionText = document.getElementById('question-text');
+            const answerButtonsElement = document.getElementById('answer-buttons');
+            const nextButton = document.getElementById('next-button');
+            const feedbackContainer = document.getElementById('feedback-container');
+            const feedbackText = document.getElementById('feedback-text');
+            const progressText = document.getElementById('progress-text');
+            const resultsContainer = document.getElementById('results-container');
+            const scoreText = document.getElementById('score-text');
+            const restartButton = document.getElementById('restart-button');
+            
+            function startQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                resultsContainer.classList.add('hidden');
+                showQuestion(questions[0]);
+            }
+            
+            function showQuestion(question) {
+                questionText.innerText = question.question;
+                
+                // Limpar botões anteriores
+                while (answerButtonsElement.firstChild) {
+                    answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+                }
+                
+                // Criar novos botões para respostas
+                question.answers.forEach(answer => {
+                    const button = document.createElement('button');
+                    button.innerText = answer.text;
+                    button.classList.add('bg-white', 'border', 'border-purple-300', 'p-3', 'rounded', 'text-left', 'hover:bg-purple-100');
+                    
+                    if (answer.correct) {
+                        button.dataset.correct = answer.correct;
+                    }
+                    
+                    button.addEventListener('click', selectAnswer);
+                    answerButtonsElement.appendChild(button);
+                });
+                
+                progressText.innerText = `Pergunta ${currentQuestionIndex + 1} de ${questions.length}`;
+                feedbackContainer.classList.add('hidden');
+                nextButton.classList.add('hidden');
+            }
+            
+            function selectAnswer(e) {
+                const selectedButton = e.target;
+                const correct = selectedButton.dataset.correct === 'true';
+                
+                // Destacar botões
+                Array.from(answerButtonsElement.children).forEach(button => {
+                    setStatusClass(button, button.dataset.correct === 'true');
+                    button.disabled = true;
+                });
+                
+                if (correct) {
+                    score++;
+                    feedbackText.innerText = '✅ Correto! Parabéns!';
+                    feedbackContainer.classList.remove('hidden');
+                    feedbackContainer.classList.add('bg-green-100');
+                    feedbackText.classList.add('text-green-800');
+                } else {
+                    feedbackText.innerText = '❌ Incorreto. A resposta certa está destacada em verde.';
+                    feedbackContainer.classList.remove('hidden');
+                    feedbackContainer.classList.add('bg-red-100');
+                    feedbackText.classList.add('text-red-800');
+                }
+                
+                nextButton.classList.remove('hidden');
+            }
+            
+            function setStatusClass(element, correct) {
+                element.classList.remove('bg-white');
+                if (correct) {
+                    element.classList.add('bg-green-200', 'border-green-500');
+                } else {
+                    element.classList.add('bg-gray-200');
+                }
+            }
+            
+            nextButton.addEventListener('click', () => {
+                currentQuestionIndex++;
+                
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion(questions[currentQuestionIndex]);
+                } else {
+                    showResults();
+                }
+            });
+            
+            function showResults() {
+                questionContainer.classList.add('hidden');
+                feedbackContainer.classList.add('hidden');
+                nextButton.classList.add('hidden');
+                progressText.classList.add('hidden');
+                
+                resultsContainer.classList.remove('hidden');
+                scoreText.innerText = `Você acertou ${score} de ${questions.length} questões!`;
+                
+                let message = '';
+                if (score === questions.length) {
+                    message = 'Excelente! Você é um especialista em dengue!';
+                } else if (score >= questions.length * 0.7) {
+                    message = 'Muito bom! Você tem bastante conhecimento sobre a dengue.';
+                } else if (score >= questions.length * 0.5) {
+                    message = 'Bom trabalho! Mas você pode aprender mais sobre a dengue.';
+                } else {
+                    message = 'Você precisa se informar mais sobre a dengue para se proteger melhor.';
+                }
+                
+                const messageElement = document.createElement('p');
+                messageElement.innerText = message;
+                messageElement.classList.add('mb-4', 'text-purple-800');
+                resultsContainer.insertBefore(messageElement, restartButton);
+            }
+            
+            restartButton.addEventListener('click', () => {
+                questionContainer.classList.remove('hidden');
+                progressText.classList.remove('hidden');
+                
+                // Remover a mensagem personalizada
+                const messageElement = resultsContainer.querySelector('p:not(#score-text)');
+                if (messageElement) {
+                    resultsContainer.removeChild(messageElement);
+                }
+                
+                startQuiz();
+            });
+            
+            // Iniciar quiz
+            startQuiz();
+        });
+    </script>
+    
+    <style>
+        .active-tab {
+            background-color: #f59e0b;
+            color: white;
+        }
+        
+        .tab-content {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .tab-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .prevention-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .prevention-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .breeding-place {
+            transition: all 0.2s ease;
+        }
+        
+        .breeding-place:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .breeding-info {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</div>
+{% endblock %}

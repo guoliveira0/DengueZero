@@ -24,37 +24,96 @@
 
         // Chamar a função ao carregar a página
         window.onload = getLocationAndRedirect;
+
+        // Efeito de loading para o feed
+        document.addEventListener("DOMContentLoaded", function() {
+            const feed = document.getElementById('feed');
+            const loader = document.getElementById('feed-loader');
+            if (feed && loader) {
+                loader.style.display = 'block';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    feed.style.opacity = 1;
+                }, 800); // tempo do loading
+            }
+        });
     </script>
+    <style>
+        /* Animação para cards do feed */
+        .feed-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .feed-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 32px 0 rgba(34,197,94,0.15);
+            border-color: #22c55e;
+        }
+        /* Loader animado */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #22c55e;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+    </style>
+    <!-- Leaflet CSS e JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Heatmap plugin para Leaflet -->
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <header class="bg-green-600 text-white py-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold">Dengue Zero</h1>
-                <p class="text-lg md:text-xl">Plataforma de combate à dengue</p>
+<body class="bg-gradient-to-br from-green-50 to-green-100 min-h-screen text-gray-800">
+    <header class="bg-green-700 text-white py-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Logo Dengue Zero" class="w-12 h-12 rounded-full shadow-lg border-2 border-white bg-white">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Dengue Zero</h1>
+                    <p class="text-sm md:text-base font-light opacity-80">Plataforma de combate à dengue</p>
+                </div>
             </div>
             <div class="flex gap-2 items-center">
-                <a href="{% url 'create_report' %}" class="px-4 py-2 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-200 transition">
+                <a href="{% url 'create_report' %}" class="px-4 py-2 bg-white text-green-700 font-bold rounded-lg shadow hover:bg-green-100 hover:scale-105 transition">
                     Reportar Caso
                 </a>
                 {% if user.is_authenticated %}
-                    <span class="px-3 py-2 bg-green-700 rounded text-white font-semibold">
+                    <span class="px-3 py-2 bg-green-800 rounded text-white font-semibold shadow">
                         {{ user.username }}
                     </span>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-700 transition">
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow hover:bg-red-700 hover:scale-105 transition">
                             Sair
                         </button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-700 transition">
+                    <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow hover:bg-blue-700 hover:scale-105 transition">
                         Login
                     </a>
                 {% endif %}
             </div>
         </div>
     </header>
+    <!-- Adicionar após o header, antes de <main> -->
+<div class="bg-blue-100 py-3 shadow-inner">
+    <div class="container mx-auto px-4">
+        <a href="{% url 'dengue_info' %}" class="flex items-center justify-center gap-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-lg font-bold">APRENDA SOBRE A DENGUE: Sintomas, Prevenção e Como Identificar Focos</span>
+            <span class="ml-2 bg-white text-orange-600 px-2 py-1 rounded-lg text-xs font-bold group-hover:bg-yellow-100">NOVO</span>
+        </a>
+    </div>
+</div>
 
     <main class="container mx-auto mt-8 px-4">
         <form method="get" action="" class="mb-8">
@@ -63,72 +122,251 @@
                     type="text" 
                     name="q" 
                     placeholder="Pesquisar por título ou localização" 
-                    class="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-base md:text-lg"
+                    class="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-base md:text-lg shadow"
                 >
                 <button 
                     type="submit" 
-                    class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-base md:text-lg">
+                    class="px-6 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 hover:scale-105 transition text-base md:text-lg">
                     Pesquisar
                 </button>
             </div>
         </form>
 
+        <!-- Loader do feed -->
+        <div id="feed-loader" class="loader"></div>
+
         <!-- Feed de Denúncias -->
-        <h2 class="text-2xl md:text-3xl font-bold mb-4">Focos de Dengue</h2>
-        <ul class="space-y-4">
-            {% for report in focus_reports %}
-                <li class="bg-white shadow-md rounded-lg p-4">
-                    <strong class="text-lg md:text-xl">{{ report.title }}</strong> - 
-                    <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
-                    <p class="text-base md:text-lg">{{ report.description }}</p>
-                    {% if report.image %}
-                        <img src="{{ report.image.url }}" alt="Imagem do foco de dengue" class="mt-4 rounded-lg w-full max-h-64 object-cover">
-                    {% endif %}
-                    <p class="text-sm text-gray-500 mt-2">Status: {{ report.get_status_display }}</p>
-                    {% if user.is_authenticated and user.username|lower|slice:"-22:" == "@centrozoonoses.com.br" %}
-                        <form method="post" action="{% url 'change_status' report.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                                {% if report.status == 'open' %} Marcar como Resolvido {% else %} Reabrir {% endif %}
-                            </button>
-                        </form>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        <div id="feed" style="opacity:0; transition: opacity 0.5s;">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">Focos de Dengue</h2>
+            <ul class="space-y-4">
+                {% for report in focus_reports %}
+                    <li class="feed-card bg-white border border-gray-200 shadow-md rounded-lg p-4 relative group">
+                        <div class="flex flex-col md:flex-row md:items-center gap-4">
+                            <div class="flex-1">
+                                <strong class="text-lg md:text-xl text-green-700">{{ report.title }}</strong> - 
+                                <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
+                                <p class="text-base md:text-lg mt-1">{{ report.description }}</p>
+                                <p class="text-sm text-gray-500 mt-2">Status: 
+                                    <span class="font-semibold {% if report.status == 'open' %}text-red-500{% else %}text-green-600{% endif %}">
+                                        {{ report.get_status_display }}
+                                    </span>
+                                </p>
+                            </div>
+                            {% if report.image %}
+                                <img src="{{ report.image.url }}" alt="Imagem do foco de dengue" class="rounded-lg w-full md:w-40 max-h-32 object-cover border-2 border-green-200 shadow">
+                            {% endif %}
+                        </div>
+                        {% if user.is_authenticated and user.username|lower|slice:"-22:" == "@centrozoonoses.com.br" %}
+                            <form method="post" action="{% url 'change_status' report.id %}" class="absolute top-2 right-2">
+                                {% csrf_token %}
+                                <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 hover:scale-105 transition text-xs">
+                                    {% if report.status == 'open' %} Marcar como Resolvido {% else %} Reabrir {% endif %}
+                                </button>
+                            </form>
+                        {% endif %}
+                        <!-- Botão de curtir/interação -->
+                        <button onclick="alert('Obrigado por apoiar a denúncia!')" class="absolute bottom-2 right-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs shadow hover:bg-green-200 transition opacity-0 group-hover:opacity-100">
+                            👍 Apoiar
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
 
-        <h2 class="text-2xl md:text-3xl font-bold mt-8 mb-4">Casos de Dengue em Casa</h2>
-        <ul class="space-y-4">
-            {% for report in case_reports %}
-                <li class="bg-white shadow-md rounded-lg p-4">
-                    <strong class="text-lg md:text-xl">{{ report.title }}</strong> - 
-                    <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
-                    <p class="text-base md:text-lg">{{ report.description }}</p>
-                    {% if report.image %}
-                        <img src="{{ report.image.url }}" alt="Imagem do caso de dengue" class="mt-4 rounded-lg w-full max-h-64 object-cover">
-                    {% endif %}
-                </li>
-            {% empty %}
-                <p class="text-base md:text-lg text-gray-600">Nenhuma denúncia de caso de dengue encontrada.</p>
-            {% endfor %}
-        </ul>
+            <h2 class="text-2xl md:text-3xl font-bold mt-8 mb-4">Casos de Dengue em Casa</h2>
+            <ul class="space-y-4">
+                {% for report in case_reports %}
+                    <li class="feed-card bg-white border border-gray-200 shadow-md rounded-lg p-4 flex flex-col md:flex-row md:items-center gap-4">
+                        <div class="flex-1">
+                            <strong class="text-lg md:text-xl text-green-700">{{ report.title }}</strong> - 
+                            <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
+                            <p class="text-base md:text-lg mt-1">{{ report.description }}</p>
+                        </div>
+                        {% if report.image %}
+                            <img src="{{ report.image.url }}" alt="Imagem do caso de dengue" class="rounded-lg w-full md:w-40 max-h-32 object-cover border-2 border-green-200 shadow">
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <p class="text-base md:text-lg text-gray-600">Nenhuma denúncia de caso de dengue encontrada.</p>
+                {% endfor %}
+            </ul>
 
-        <h2 class="text-2xl md:text-3xl font-bold mt-8 mb-4">Focos de Dengue Resolvidos</h2>
-        <ul class="space-y-4">
-            {% for report in resolved_reports %}
-                <li class="bg-gray-200 shadow-md rounded-lg p-4">
-                    <strong class="text-lg md:text-xl">{{ report.title }}</strong> - 
-                    <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
-                    <p class="text-base md:text-lg">{{ report.description }}</p>
-                    {% if report.image %}
-                        <img src="{{ report.image.url }}" alt="Imagem do foco de dengue" class="mt-4 rounded-lg w-full max-h-64 object-cover">
-                    {% endif %}
-                    <p class="text-sm text-gray-500 mt-2">Status: {{ report.get_status_display }}</p>
-                </li>
-            {% empty %}
-                <p class="text-base md:text-lg text-gray-600">Nenhuma denúncia resolvida encontrada.</p>
-            {% endfor %}
-        </ul>
+            <h2 class="text-2xl md:text-3xl font-bold mt-8 mb-4">Focos de Dengue Resolvidos</h2>
+            <ul class="space-y-4">
+                {% for report in resolved_reports %}
+                    <li class="feed-card bg-gray-100 border border-gray-300 shadow-md rounded-lg p-4 flex flex-col md:flex-row md:items-center gap-4">
+                        <div class="flex-1">
+                            <strong class="text-lg md:text-xl text-green-700">{{ report.title }}</strong> - 
+                            <span class="text-sm md:text-base text-gray-600">{{ report.location }}</span> <br>
+                            <p class="text-base md:text-lg mt-1">{{ report.description }}</p>
+                            <p class="text-sm text-gray-500 mt-2">Status: 
+                                <span class="font-semibold text-green-600">{{ report.get_status_display }}</span>
+                            </p>
+                        </div>
+                        {% if report.image %}
+                            <img src="{{ report.image.url }}" alt="Imagem do foco de dengue" class="rounded-lg w-full md:w-40 max-h-32 object-cover border-2 border-green-200 shadow">
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <p class="text-base md:text-lg text-gray-600">Nenhuma denúncia resolvida encontrada.</p>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h2 class="text-2xl md:text-3xl font-bold mt-8 mb-4">Mapa de Calor de Casos de Dengue</h2>
+        <div class="mb-4">
+            <button id="toggle-sample-data" class="px-3 py-1 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 hover:scale-105 transition text-sm">
+                Mostrar dados de exemplo
+            </button>
+            <span id="data-source" class="ml-2 text-sm text-gray-600">Usando dados reais</span>
+        </div>
+        <div id="map" style="height: 400px; width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"></div>
+        <div id="debug-info" class="text-xs text-gray-500 mt-2"></div>
+
+        <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Usar as coordenadas do usuário se disponíveis, caso contrário usar padrão
+    var centerLat = {% if user_latitude %}parseFloat("{{ user_latitude }}"){% else %}-23.55052{% endif %};
+    var centerLng = {% if user_longitude %}parseFloat("{{ user_longitude }}"){% else %}-46.633308{% endif %};
+    
+    // Dados de exemplo para casos de dengue (para demonstração)
+    var sampleData = [
+        // Centro (alta intensidade)
+        [centerLat, centerLng, 10],
+        
+        // Bairro Norte (vários casos)
+        [centerLat + 0.02, centerLng - 0.01, 8],
+        [centerLat + 0.025, centerLng - 0.005, 7],
+        [centerLat + 0.02, centerLng + 0.01, 6],
+        
+        // Bairro Sul (poucos casos)
+        [centerLat - 0.03, centerLng, 3],
+        [centerLat - 0.025, centerLng + 0.01, 2],
+        
+        // Bairro Leste (concentração média)
+        [centerLat - 0.01, centerLng + 0.03, 5],
+        [centerLat, centerLng + 0.025, 4],
+        [centerLat + 0.01, centerLng + 0.03, 5],
+        
+        // Bairro Oeste (alta concentração)
+        [centerLat - 0.005, centerLng - 0.04, 9],
+        [centerLat + 0.01, centerLng - 0.035, 8],
+        [centerLat - 0.015, centerLng - 0.03, 7]
+    ];
+    
+    var debugInfo = document.getElementById('debug-info');
+    var toggleButton = document.getElementById('toggle-sample-data');
+    var dataSource = document.getElementById('data-source');
+    var usingSampleData = false;
+    
+    // Inicializar o mapa
+    var map = L.map('map').setView([centerLat, centerLng], 11);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    var heatLayer = null;
+    
+    // Função para carregar e exibir dados
+    function loadHeatmapData(useExample = false) {
+        if (heatLayer) {
+            map.removeLayer(heatLayer);
+        }
+        
+        if (useExample) {
+            // Usar dados de exemplo
+            dataSource.textContent = "Usando dados de exemplo";
+            debugInfo.textContent = "Exibindo " + sampleData.length + " pontos de dados de exemplo";
+            
+            heatLayer = L.heatLayer(sampleData, {
+                radius: 25,
+                blur: 15,
+                maxZoom: 17,
+                gradient: {
+                    0.1: 'blue',
+                    0.3: 'lime',
+                    0.5: 'yellow',
+                    0.7: 'orange',
+                    1.0: 'red'
+                }
+            }).addTo(map);
+            
+            // Ajustar visualização
+            var bounds = [];
+            sampleData.forEach(function(point) {
+                bounds.push([point[0], point[1]]);
+            });
+            map.fitBounds(bounds);
+        } else {
+            // Carregar dados da API
+            dataSource.textContent = "Carregando dados reais...";
+            debugInfo.textContent = "Buscando dados da API...";
+            
+            fetch('/api/dengue_heatmap/')
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    debugInfo.textContent = "Recebidos " + data.length + " pontos da API";
+                    dataSource.textContent = "Usando dados reais";
+                    
+                    if (data.length > 0) {
+                        heatLayer = L.heatLayer(data, {
+                            radius: 25,
+                            blur: 15,
+                            maxZoom: 17,
+                            gradient: {
+                                0.1: 'blue',
+                                0.3: 'lime',
+                                0.5: 'yellow',
+                                0.7: 'orange',
+                                1.0: 'red'
+                            }
+                        }).addTo(map);
+                        
+                        // Ajustar visualização
+                        var bounds = [];
+                        data.forEach(function(point) {
+                            bounds.push([point[0], point[1]]);
+                        });
+                        if (bounds.length > 0) {
+                            map.fitBounds(bounds);
+                        }
+                    } else {
+                        debugInfo.textContent += " - Nenhum dado retornado pela API";
+                        var noDataMsg = document.createElement("div");
+                        noDataMsg.className = "p-4 bg-white rounded shadow text-center absolute";
+                        noDataMsg.style.top = "50%";
+                        noDataMsg.style.left = "50%";
+                        noDataMsg.style.transform = "translate(-50%, -50%)";
+                        noDataMsg.style.zIndex = 1000;
+                        noDataMsg.innerHTML = 'Nenhum caso registrado ainda. Clique "Mostrar dados de exemplo" acima.';
+                        document.getElementById('map').appendChild(noDataMsg);
+                    }
+                })
+                .catch(function(error) {
+                    debugInfo.textContent = "Erro na API: " + error.message + ". Usando dados de exemplo.";
+                    loadHeatmapData(true); // Fallback para dados de exemplo
+                });
+        }
+    }
+    
+    // Carregar dados iniciais da API
+    loadHeatmapData(false);
+    
+    // Botão para alternar entre dados reais e de exemplo
+    toggleButton.addEventListener('click', function() {
+        usingSampleData = !usingSampleData;
+        loadHeatmapData(usingSampleData);
+        toggleButton.textContent = usingSampleData ? 
+            "Mostrar dados reais" : "Mostrar dados de exemplo";
+    });
+});
+</script>
     </main>
+
 </body>
 </html>

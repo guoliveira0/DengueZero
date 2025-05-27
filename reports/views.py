@@ -5,6 +5,8 @@ from .models import Report
 from geopy.geocoders import Nominatim
 from django.db.models import Q
 from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.db.models import Count
 
 
 ALLOWED_EMAILS = ['luiz@sistemasaude.com.br', 'luiz@centrozoonoses.com.br']
@@ -42,6 +44,15 @@ def home(request):
     # Obter a localização do usuário usando os parâmetros da URL
     user_latitude = request.GET.get('latitude')
     user_longitude = request.GET.get('longitude')
+    user_location = None
+
+    if user_latitude and user_longitude:
+        try:
+            location = geolocator.reverse(f"{user_latitude}, {user_longitude}")
+            if location:
+                user_location = location.address
+        except:
+            pass  # Se houver erro na geolocalização reversa
 
     if user_latitude and user_longitude:
         geolocator = Nominatim(user_agent="denguezero")
@@ -65,9 +76,9 @@ def home(request):
         'resolved_reports': resolved_reports,
         'case_reports': case_reports,
         'query': query,
-        
-        
-        
+        'user_latitude': user_latitude,
+        'user_longitude': user_longitude,
+        'user_location': user_location,  # Adicionei isso
     })
 
 
@@ -99,7 +110,25 @@ def custom_login(request):
             error = "Usuário não autorizado."
     return render(request, 'reports/login.html', {'error': error})
 
-@login_required
-def sua_view_restrita(request):
-    # código da view
-    return render(request, 'reports/sua_template.html')
+
+def dengue_heatmap(request):
+    # Obter dados de casos agrupados por localização/bairro
+    reports_by_location = Report.objects.values('location', 'latitude', 'longitude') \
+                          .annotate(count=Count('id'))
+    
+    # Formatar os dados para o heatmap (formato [lat, lng, intensidade])
+    heatmap_data = []
+    for report in reports_by_location:
+        if report['latitude'] and report['longitude']:  # garantir que temos coordenadas válidas
+            # A intensidade é proporcional ao número de casos
+            heatmap_data.append([
+                float(report['latitude']),
+                float(report['longitude']),
+                report['count']  # intensidade baseada no número de casos
+            ])
+    
+    return JsonResponse(heatmap_data, safe=False)
+
+def dengue_info(request):
+    """Página informativa sobre a dengue"""
+    return render(request, 'reports/dengue_info.html')

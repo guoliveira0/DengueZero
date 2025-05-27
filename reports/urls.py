@@ -9,4 +9,7 @@ urlpatterns = [
     path('change_status/<int:report_id>/', views.change_status, name='change_status'),
     path('login/', views.custom_login, name='login'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('api/dengue_heatmap/', views.dengue_heatmap, name='dengue_heatmap'),
+        path('informacoes-dengue/', views.dengue_info, name='dengue_info'),  # Nova URL
+
 ]
