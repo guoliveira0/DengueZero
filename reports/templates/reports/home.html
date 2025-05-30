@@ -68,13 +68,14 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Heatmap plugin para Leaflet -->
     <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    {% load static %}
 </head>
 <body class="bg-gradient-to-br from-green-50 to-green-100 min-h-screen text-gray-800">
     <header class="bg-green-700 text-white py-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center px-4">
             <!-- Logo -->
             <div class="flex items-center gap-3">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Logo Dengue Zero" class="w-12 h-12 rounded-full shadow-lg border-2 border-white bg-white">
+                <img src="{% static 'reports/images/mosquito.png' %}" alt="Logo Dengue Zero" class="w-12 h-12 rounded-full shadow-lg border-2 border-white bg-white">
                 <div>
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Dengue Zero</h1>
                     <p class="text-sm md:text-base font-light opacity-80">Plataforma de combate à dengue</p>
@@ -266,6 +267,37 @@ document.addEventListener("DOMContentLoaded", function() {
     }).addTo(map);
     
     var heatLayer = null;
+    
+    // Adicionar uma legenda ao mapa
+    var legend = L.control({position: 'bottomright'});
+    
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML = '<h4 class="font-bold text-sm mb-1 pb-1 border-b border-gray-300">Intensidade de Casos</h4>';
+        
+        // Adiciona as categorias de cores na legenda
+        var categories = [
+            '<span class="w-4 h-4 inline-block bg-blue-500 mr-1 rounded-sm"></span> Poucos casos',
+            '<span class="w-4 h-4 inline-block bg-lime-500 mr-1 rounded-sm"></span> Casos moderados',
+            '<span class="w-4 h-4 inline-block bg-yellow-500 mr-1 rounded-sm"></span> Muitos casos',
+            '<span class="w-4 h-4 inline-block bg-orange-500 mr-1 rounded-sm"></span> Alta incidência',
+            '<span class="w-4 h-4 inline-block bg-red-500 mr-1 rounded-sm"></span> Crítico'
+        ];
+        
+        div.innerHTML += '<div class="text-xs space-y-1 mt-2">' + 
+                         categories.join('<br>') + 
+                         '</div>';
+        
+        div.style.backgroundColor = 'white';
+        div.style.padding = '10px';
+        div.style.borderRadius = '6px';
+        div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+        
+        return div;
+    };
+    
+    // Adicionar a legenda ao mapa
+    legend.addTo(map);
     
     // Função para carregar e exibir dados
     function loadHeatmapData(useExample = false) {
