@@ -3,7 +3,7 @@ Dengue Zero
 🦟 Sobre o Projeto
 Dengue Zero é uma plataforma web colaborativa para combate à dengue, permitindo que cidadãos reportem focos do mosquito e casos da doença em sua região. O sistema visa conectar a população com órgãos de saúde pública para agilizar o combate à proliferação do Aedes aegypti.
 
-✨ Principais Funcionalidades
+✨ Principais Funcionalidades\n
 🗺️ Mapa de calor interativo mostrando concentrações de focos de dengue
 📱 Interface responsiva adaptada para dispositivos móveis e desktop
 📍 Geolocalização automática para facilitar denúncias precisas
