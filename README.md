@@ -1,5 +1,5 @@
 Dengue Zero
-<p align="center"> <img src="https://github.com/your-username/DengueZero/raw/main/reports/static/reports/images/mosquito.png" alt="Dengue Zero Logo" width="120"> </p>
+
 🦟 Sobre o Projeto
 Dengue Zero é uma plataforma web colaborativa para combate à dengue, permitindo que cidadãos reportem focos do mosquito e casos da doença em sua região. O sistema visa conectar a população com órgãos de saúde pública para agilizar o combate à proliferação do Aedes aegypti.
 
