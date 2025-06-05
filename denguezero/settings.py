@@ -118,10 +118,8 @@ USE_TZ = True
 
 # Configuração para arquivos estáticos (CSS, JS, imagens do sistema)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'reports', 'static'),
-]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Configuração para uploads de usuários
 MEDIA_URL = '/media/'
