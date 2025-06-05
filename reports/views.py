@@ -13,7 +13,8 @@ ALLOWED_EMAILS = ['luiz@sistemasaude.com.br', 'luiz@centrozoonoses.com.br']
 
 def create_report(request):
     if request.method == 'POST':
-        form = ReportForm(request.POST)
+        # Importante: passar também request.FILES para o formulário!
+        form = ReportForm(request.POST, request.FILES)
         if form.is_valid():
             report = form.save(commit=False)
             # Capturar latitude e longitude do POST

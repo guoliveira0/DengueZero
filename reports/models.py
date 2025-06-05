@@ -22,7 +22,7 @@ class Report(models.Model):
     location = models.CharField(max_length=255, verbose_name="Localização", blank=True, null=True)
     latitude = models.FloatField(verbose_name="Latitude", blank=True, null=True)
     longitude = models.FloatField(verbose_name="Longitude", blank=True, null=True)
-    image = models.ImageField(upload_to='reports/', blank=True, null=True, verbose_name="Imagem")
+    image = models.ImageField(upload_to='uploads/dengue_reports/', blank=True, null=True, verbose_name="Imagem")
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
